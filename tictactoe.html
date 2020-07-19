@@ -1,0 +1,205 @@
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+  // true = player 1
+  // false = player 2
+  var pressedIndex;
+  var pressedElement;
+  var status = $('.centeredText').filter('.status');
+
+  $('.well').on('click',function(){
+    pressedElement = $(this);
+    pressedIndex = pressedElement.data('index');
+    //Check if the game is in progress
+    if(isWinner() === false){
+      //Check if the move is legal
+      if(isMoveValid(pressedIndex)){
+        // Add the marker (O/X) to UL and array
+        var marker = addMarkerToBoard(pressedIndex);
+        pressedElement.find('.contentOfWell').text(marker);
+        // Next player turn
+        nextPlayerTurn();
+        if(turn){
+          status.text("Player 1 - X Turn")
+        } else {
+          status.text("Player 2 - O Turn");
+        }
+      } else {
+        status.text("Match Draw!");
+      }
+    } else {  if(turn){
+      status.text("Player 2 Wins");
+      }
+      else
+    {status.text("Player 1 Wins");}
+    }
+  });
+
+  });
+
+var turn = true;
+var board = [];
+var messageToUser;
+
+function nextPlayerTurn(){
+  if(turn){
+    turn = false;
+  } else {
+    turn = true;
+  }
+  return turn;
+}
+
+function addMarkerToBoard(index){
+  // true - player 1 is a X
+  // false - player 2 is a O
+  if(turn){
+    board[index] = "X";
+      return "X";
+  } else {
+    board[index] = "O";
+    return "O";
+  }
+}
+
+function isWinner(){
+  // X | X | X
+  // X | X | X
+  // x | X | X
+
+  var top = board[0];
+  var middle = board[3];
+  var bottom = board[6];
+  var winner = false;
+
+  //Not good code since at the start the array indexes are all undefined so it will return true.
+  // Fixed by not allowing some spaces to be undefined
+  //1. Horizontal Rows
+  if(board[1] === top && board[2] === top && top != undefined){
+    winner = true;
+  } else if (board[4] === middle && board[5] === middle && middle != undefined){
+    winner = true;
+  } else if(board[7] === bottom && board[8] === bottom && bottom != undefined){
+    winnder = true;
+  //2. Vertical Rows
+  } else if(board[3] === top && board[6] === top && top != undefined){
+    winner = true;
+  } else if(board[4] === board[1] && board[7] === board[1] && board[1] != undefined){
+    winner = true;
+  } else if(board[5] === board[2] && board[8] === board[2] && board[2]){
+    winner = true;
+  //3. Across
+} else if(board[4] === top && board[8] === top && top != undefined){
+    winner = true;
+  } else if(board[4] === board[2] && board[6] === board[2] && board[2] != undefined){
+    winner = true;
+  } else {
+    winner = false;
+  }
+  return winner;
+}
+function isGameOver(){
+
+}
+
+function isMoveValid(index){
+  // So space is not take
+  if(board[index] === undefined){
+    return true;
+  } else {
+    return false;
+  }
+}
+</script>
+<style>
+.centeredText{
+  text-align:center;
+  padding:0;
+  margin:0;
+}
+.board{
+  padding:1%;
+}
+
+.takeFullSize{
+  display: block;
+  width:100%;
+  height:10%;
+}
+div{
+      height:100px;
+      width:100px;
+};
+</style>
+</head>
+<body>
+    <p style="font-size: 50px;">Player 1 as 'X'</p>
+    <p style="font-size: 50px; margin-left: 1200px;margin-top: -100px;">Player 2 as 'O'</p>
+<center>
+    <h1 class="centeredText" style="font-size: 40px;">Tic Tac Toe</h1><br>
+    <h3 class="centeredText status" style="font-family: inherit; font-size: 30px;">Player 1 Turn</h3>
+ <table border=1 style="margin-top: -100px;">
+    <div class="board">
+    <tr><td><div class="row">
+      <!-- Start of Row 1 -->
+        <div class="col-xs-4 col-lg-4">
+          <div class="well" data-index="0">
+            <p class="contentOfWell centeredText" style="font-size: 80px;"></p>
+          </div>
+        </div></td>
+        <td><div class="col-xs-4 col-lg-4">
+          <div class="well" data-index="1">
+            <p class="contentOfWell centeredText" style="font-size: 80px;"></p>
+          </div>
+        </div></td>
+        <td><div class="col-xs-4 col-lg-4">
+          <div class="well" data-index="2">
+            <p class="contentOfWell centeredText" style="font-size: 80px;"></p>
+          </div>
+        </div></td></tr>
+      <!-- End of Row 1 -->
+<tr>
+      <!-- Start of Row 2 -->
+      <td>  <div class="col-xs-4 col-lg-4">
+          <div class="well" data-index="3">
+            <p class="contentOfWell centeredText" style="font-size: 80px;"></p>
+          </div>
+        </div></td>
+        <td><div class="col-xs-4 col-lg-4">
+          <div class="well" data-index="4">
+            <p class="contentOfWell centeredText" style="font-size: 80px;"></p>
+          </div>
+        </div></td>
+        <td><div class="col-xs-4 col-lg-4">
+          <div class="well" data-index="5">
+            <p class="contentOfWell centeredText" style="font-size: 80px;"></p>
+          </div>
+        </div></td></tr>
+      <!-- End of Row 2 -->
+<tr>
+      <!-- Start of Row 3 -->
+      <td>  <div class="col-xs-4 col-lg-4">
+          <div class="well" data-index="6">
+            <p class="contentOfWell centeredText" style="font-size: 80px;"></p>
+          </div>
+        </div></td>
+    <td>    <div class="col-xs-4 col-lg-4">
+          <div class="well" data-index="7">
+            <p class="contentOfWell centeredText" style="font-size: 80px;"></p>
+          </div>
+        </div></td>
+       <td> <div class="col-xs-4 col-lg-4">
+          <div class="well" data-index="8">
+            <p class="contentOfWell centeredText" style="font-size: 80px;"></p>
+          </div>
+        </div></td></tr>
+      <!-- End of Row 3 -->
+    </div>
+  </div>
+  </div>
+</table></center>
+<p><b>One click extra for Result</b></p>
+</body>
+ </html>
